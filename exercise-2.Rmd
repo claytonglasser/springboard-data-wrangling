@@ -1,0 +1,39 @@
+---
+title: "Exercise 2"
+author: "Clayton Glasser"
+date: "June 21, 2018"
+output: html_document
+---
+
+# 1
+Load tidyverse and store the csv data into a dataframe called titanic. 
+
+```{r}
+library(tidyverse)
+titanic <- read_csv("titanic_original.csv")
+
+titanic
+```
+
+# 2
+* Store "s" in any occurance of NA inside the `embark` column then
+* Calculate the mean of all the entries in the `age` column, excluding any missing values, and store it in `mean_age` then
+* Store `mean_age` in any occurance of NA inside the `embark` column then
+* Store "none" in any instance which is NA inside the `boat` column then
+* Into `titanic` store `titanic` then add a column called `has_cabin_number` the instances of which are equal to 0 if NA, otherwise are 1. 
+
+```{r}
+titanic$embarked[is.na(titanic$embarked)] <- "s"
+mean_age <- mean(titanic$age, na.rm = TRUE)
+titanic$age[is.na(titanic$age)] <- mean_age
+titanic$boat[is.na(titanic$boat)] <- "none"
+titanic <- titanic %>% mutate(has_cabin_number = ifelse(is.na(titanic$cabin), 0, 1))
+
+```
+
+# 3
+End result:
+
+```{r}
+titanic
+```

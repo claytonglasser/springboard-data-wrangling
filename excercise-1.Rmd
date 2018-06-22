@@ -1,0 +1,90 @@
+---
+title: "Exercise 1"
+author: "Clayton Glasser"
+date: "June 21, 2018"
+output: html_document
+---
+
+# 1
+Install and load `tidyverse` library (includes tidyr, dplyr, ggplot2, readr, et al).
+
+```{r}
+library(tidyverse)
+```
+
+# 2
+Store the info within the csv in a data frame called `reine`. `Read_csv` will import values as characters. `read.csv` will import them as factors. For data wrangling purposes `import_csv` may be more useful. 
+
+```{r}
+refine <- read_csv("refine_original.csv")
+refine
+```
+
+# 3
+* Store in the data frame `refine` the content of `refine` then
+* Add a column named `company` in which the values are set equal to "y" if the current value starts with "x", regardless of case, and assign this column to the `company` column (then repeat 4x for different cases)
+
+```{r}
+refine <- refine %>% mutate(company = ifelse(grepl("^phil|^fil|^phl", company, ignore.case = TRUE), "philips", company)) %>%
+  mutate(company = ifelse(grepl("^ak", company, ignore.case = TRUE), "akzo", company)) %>%
+  mutate(company = ifelse(grepl("^van", company, ignore.case = TRUE), "van_houten", company)) %>%
+  mutate(company = ifelse(grepl("^uni", company, ignore.case = TRUE), "unilever", company))
+
+```
+
+# 4
+* Store in the data frame `refine` the content of `refine` then
+* Separate the occurance of the value "Product code / number" into two new columns containing a vector of values "x" and "y", where you find  "-" in that search 
+
+```{r}
+refine <- refine %>% separate("Product code / number", into = c("product_code", "product_number"), sep = "-")
+
+```
+
+# 5
+To the `product_category` column, if the content is "x" replace it with "y"
+
+```{r}
+refine <- refine %>% mutate("product_category" = ifelse(product_code == "p", "Smartphone", "")) %>%
+  mutate("product_category" = ifelse(product_code == "x", "Laptop", product_category)) %>%
+  mutate("product_category" = ifelse(product_code == "v", "TV", product_category)) %>%
+  mutate("product_category" = ifelse(product_code == "q", "Tablet", product_category))
+
+```
+
+# 6
+Unite into the new column `full_address`, separated by a space, the values of the columns `address`, `city`, and `country`. 
+
+```{r}
+refine <- refine %>% unite(full_address, c(address, city, country), sep = ",")
+```
+
+# 7
+* Create four columns corresponding to the four categorical values of the `company` column each of which takes a binary input.
+* If the value of `company_x` is "x", set the categorical value to 1, otherwise 0
+
+```{r}
+refine <- refine %>% mutate(company_philips = ifelse(company =="philips", 1, 0)) %>%
+  mutate(company_akzo = ifelse(company == "akzo", 1, 0)) %>%
+  mutate(company_van_houten = ifelse(company == "van_houten", 1, 0)) %>%
+  mutate(company_unilever = ifelse(company == "unilever", 1, 0))
+```
+
+# 8
+* Create four columns corresponding to the four categorical values of the `company` column each of which takes a binary input.
+* If the value of `company_x` is "x", set the categorical value to 1, otherwise 0
+
+```{r}
+ 
+refine <- refine %>% mutate(product_smartphone = ifelse(product_category == "Smartphone", 1, 0)) %>%
+  mutate(product_TV = ifelse(product_category == "TV", 1, 0)) %>%
+  mutate(product_laptop = ifelse(product_category == "Laptop", 1, 0)) %>%
+  mutate(product_tablet = ifelse(product_category == "Tablet", 1, 0))
+```
+
+# 9
+End result:
+
+```{r}
+refine
+```
