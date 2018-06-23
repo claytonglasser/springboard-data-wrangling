@@ -13,7 +13,7 @@ library(tidyverse)
 ```
 
 # 2
-Store the info within the csv in a data frame called `reine`. `Read_csv` will import values as characters. `read.csv` will import them as factors. For data wrangling purposes `import_csv` may be more useful. 
+Store the info within the csv in a data frame called `refine`. `Read_csv` will import values as characters. `read.csv` will import them as factors. For data wrangling purposes `import_csv` may be more useful. 
 
 ```{r}
 refine <- read_csv("refine_original.csv")
